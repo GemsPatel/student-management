@@ -15,9 +15,11 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->integer('age');
+            $table->string( 'roll_number' )->unique()->comment('Roll No (Must be unique)');
+            $table->string('name')->comment('Student Name')->nullable();
+            $table->integer('class')->comment('Class (1 to 12th)')->nullable();
+            $table->float('score', 8, 2)->comment('Subject Scores for 5 Subjects')->default(0);
+            $table->string('avtar')->comment('Student Passport size image')->nullable();
             $table->timestamps();
         });
     }

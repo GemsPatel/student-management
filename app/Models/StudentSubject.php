@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class StudentSubject extends Model
 {
     use HasFactory;
-    protected $fillable = ['roll_number', 'name','class', 'score', 'avtar'];
+    protected $fillable = ['student_id', 'subject_id'];
 }
