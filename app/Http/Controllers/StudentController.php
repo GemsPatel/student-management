@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Mark;
 use App\Models\Student;
-use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -17,7 +16,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::latest()->paginate(10);
-        return view('students.index',compact('students'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('students.index',compact('students'));//->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -56,6 +55,7 @@ class StudentController extends Controller
             'subject_4' => 'required',
             'mark_4' => 'required',
             'score' => 'required',
+            'avtar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         // save student information
@@ -64,6 +64,9 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->class = $request->class;
         $student->score = $request->score;
+
+        $imageName = time().'.'.$request->avtar->extension();
+        $student->avtar = $request->avtar->storeAs('avtar', $imageName);//$this->UserImageUpload( $request->avtar );
         $student->save();
 
         //save student subject information
@@ -139,5 +142,20 @@ class StudentController extends Controller
         //
         $student->delete();
         return redirect()->route('students.index')->with('success','Student deleted successfully');
+    }
+
+    /**
+     * 
+     */
+    public function UserImageUpload($query) // Taking input image as parameter
+    {
+        $image_name = str_random(20);
+        $ext = strtolower($query->getClientOriginalExtension()); // You can use also getClientOriginalName()
+        $image_full_name = $image_name.'.'.$ext;
+        $upload_path = 'image/';    //Creating Sub directory in Public folder to put image
+        $image_url = $upload_path.$image_full_name;
+        $success = $query->move($upload_path,$image_full_name);
+ 
+        return $image_url; // Just return image
     }
 }

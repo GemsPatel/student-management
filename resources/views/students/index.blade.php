@@ -44,21 +44,21 @@ use App\Models\Mark;
             $subjectArr = Mark::with('subject')->where('student_id', $ar->id)->get();//DB::table('marks')->with( 'subject' )->where('student_id', $ar->id )->get();
             ?>
             <tr>
-                <td>{{ ++$i }}</td>
+                <td>{{$ar->id}}</td>
                 <td>{{$ar->roll_number}}</td>
                 <td>{{$ar->name}}</td>
                 <td>{{$ar->class}}</td>
-                <td>{{$subjectArr[0]->subject->name.": ".$subjectArr[0]->mark}}</td>
-                <td>{{$subjectArr[1]->subject->name.": ".$subjectArr[1]->mark}}</td>
-                <td>{{$subjectArr[2]->subject->name.": ".$subjectArr[2]->mark}}</td>
-                <td>{{$subjectArr[3]->subject->name.": ".$subjectArr[3]->mark}}</td>
-                <td>{{$subjectArr[4]->subject->name.": ".$subjectArr[4]->mark}}</td>
+                <td><b>{{$subjectArr[0]->subject->name}}:</b> {{$subjectArr[0]->mark}}</td>
+                <td><b>{{$subjectArr[1]->subject->name}}:</b> {{$subjectArr[1]->mark}}</td>
+                <td><b>{{$subjectArr[2]->subject->name}}:</b> {{$subjectArr[2]->mark}}</td>
+                <td><b>{{$subjectArr[3]->subject->name}}:</b> {{$subjectArr[3]->mark}}</td>
+                <td><b>{{$subjectArr[4]->subject->name}}:</b> {{$subjectArr[4]->mark}}</td>
                 <td>{{$ar->score}}</td>
-                <td>
+                <td class="text-center">
                     <form action="{{ route('students.destroy',$ar->id) }}" method="POST">
                         @csrf
-                        <a class="btn btn-info" href="{{ route('students.show',$ar->id) }}">Show</a>
-                        <a class="btn btn-primary" href="{{ route('students.edit',$ar->id) }}">Edit</a>
+                        <a class="btn btn-info d-none mb-2" href="{{ route('students.show',$ar->id) }}">Show</a>
+                        <a class="btn btn-primary mb-2" href="{{ route('students.edit',$ar->id) }}">Edit</a>
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Do you really want to delete student!')" class="btn btn-danger">Delete</button>
                     </form>
