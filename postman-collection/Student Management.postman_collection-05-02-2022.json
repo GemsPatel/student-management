@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "8cdeafaf-0f7b-450f-84bd-cee5cd15038f",
+		"name": "Student Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Student Result",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.26/laravel/student-management/public/api/getstudents",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"26"
+					],
+					"path": [
+						"laravel",
+						"student-management",
+						"public",
+						"api",
+						"getstudents"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
