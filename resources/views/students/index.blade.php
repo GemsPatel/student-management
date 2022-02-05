@@ -46,19 +46,16 @@ use App\Models\Mark;
         </thead>
         <tbody>
             @forelse ($students as $ar)
-                <?php
-                $subjectArr = Mark::with('subject')->where('student_id', $ar->id)->get();//DB::table('marks')->with( 'subject' )->where('student_id', $ar->id )->get();
-                ?>
                 <tr>
                     <td>{{$ar->id}}</td>
                     <td>{{$ar->roll_number}}</td>
                     <td>{{$ar->name}}</td>
                     <td>{{$ar->class}}</td>
-                    <td><b>{{$subjectArr[0]->subject->name}}:</b> {{$subjectArr[0]->mark}}</td>
-                    <td><b>{{$subjectArr[1]->subject->name}}:</b> {{$subjectArr[1]->mark}}</td>
-                    <td><b>{{$subjectArr[2]->subject->name}}:</b> {{$subjectArr[2]->mark}}</td>
-                    <td><b>{{$subjectArr[3]->subject->name}}:</b> {{$subjectArr[3]->mark}}</td>
-                    <td><b>{{$subjectArr[4]->subject->name}}:</b> {{$subjectArr[4]->mark}}</td>
+                    <td><b>{{$ar->mark[0]->subject->name ?? ''}}:</b> {{$ar->mark[0]->mark ?? ''}}</td>
+                    <td><b>{{$ar->mark[1]->subject->name ?? ''}}:</b> {{$ar->mark[1]->mark ?? ''}}</td>
+                    <td><b>{{$ar->mark[2]->subject->name ?? ''}}:</b> {{$ar->mark[2]->mark ?? ''}}</td>
+                    <td><b>{{$ar->mark[3]->subject->name ?? ''}}:</b> {{$ar->mark[3]->mark ?? ''}}</td>
+                    <td><b>{{$ar->mark[4]->subject->name ?? ''}}:</b> {{$ar->mark[4]->mark ?? ''}}</td>
                     <td>{{$ar->score}}</td>
                     <td class="text-center">
                         <form action="{{ route('students.destroy',$ar->id) }}" method="POST">

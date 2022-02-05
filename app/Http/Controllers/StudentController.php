@@ -15,7 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::orderBy( 'id', 'desc' )->get();//->paginate(10);
+        $students = Student::with('mark')->orderBy( 'id', 'desc' )->get();//->paginate(10);
         return view('students.index',compact('students'));//->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -39,7 +39,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'roll_number' => 'required',
+            'roll_number' => 'required|unique:students,roll_number',
             'name' => 'required',
             'class' => 'required',
             // 'subject' => 'required|array|min:5',
@@ -109,7 +109,8 @@ class StudentController extends Controller
     public function edit(Student $student)
     {
         //
-        return view('students.edit',compact('student'));
+        $students = Student::with('mark')->where('id', $student->id)->first();
+        return view('students.edit',compact('students'));
     }
 
     /**
@@ -123,11 +124,54 @@ class StudentController extends Controller
     {
         //
         $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'age' => 'required',
+            'roll_number' => 'required|unique:students,roll_number,'.$student->id,
+            'name' => 'required',
+            'class' => 'required',
+            // 'subject' => 'required|array|min:5',
+            // 'mark' => 'required|array|min:5',
+            'subject_0' => 'required',
+            'mark_0' => 'required',
+            'subject_1' => 'required',
+            'mark_1' => 'required',
+            'subject_2' => 'required',
+            'mark_2' => 'required',
+            'subject_3' => 'required',
+            'mark_3' => 'required',
+            'subject_4' => 'required',
+            'mark_4' => 'required',
+            'score' => 'required',
+            'avtar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $student->update($request->all());
+
+        // save student information
+        $student = new Student();
+        $student->roll_number = $request->roll_number;
+        $student->name = $request->name;
+        $student->class = $request->class;
+        $student->score = $request->score;
+
+        if( $request->hasFile('avtar') ){
+            $imageName = time().'.'.$request->avtar->extension();
+            $student->avtar = $request->avtar->storeAs('avtar', $imageName);//$this->UserImageUpload( $request->avtar );
+        }
+        $student->save();
+
+        //save student subject information
+        // if( $request->subject ){
+        //     foreach( $request->subject as $k=>$ar ){
+                for( $k=0;$k<5;$k++ ){
+                    $mark = new Mark();
+                    $mark->student_id = $student->id;
+                    $subject = "subject_".$k;
+                    $marks = "mark_".$k;
+                    $mark->subject_id = $request->$subject;
+                    $mark->mark = $request->$marks;
+                    $mark->save();
+                }
+        //     }
+        // }
+
+        // $student->update($request->all());
         return redirect()->route('students.index')->with('success','Student updated successfully');
     }
 
@@ -149,7 +193,7 @@ class StudentController extends Controller
      */
     public function UserImageUpload($query) // Taking input image as parameter
     {
-        $image_name = str_random(20);
+        $image_name = $this->generateRandomString(20);
         $ext = strtolower($query->getClientOriginalExtension()); // You can use also getClientOriginalName()
         $image_full_name = $image_name.'.'.$ext;
         $upload_path = 'image/';    //Creating Sub directory in Public folder to put image
@@ -157,5 +201,21 @@ class StudentController extends Controller
         $success = $query->move($upload_path,$image_full_name);
  
         return $image_url; // Just return image
+    }
+
+    /**
+     * 
+     */
+    /**
+     * 
+     */
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
