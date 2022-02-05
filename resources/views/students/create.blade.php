@@ -1,14 +1,5 @@
 @extends('layout')
 @section('content')
-    <style>
-        .error{ color: red; }
-        .center { height:234px; display:flex; align-items:center; justify-content:center; }
-        .form-input { width:350px; height: 234px; padding:15px; background:#fff; box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377), 3px 3px 7px rgba(94, 104, 121, 0.377); }
-        .form-input img { width:100%; display:none; margin-bottom:20px; }
-        .form-input input { display:none; }
-        .form-input label { display:block; width:45%; height:35px; margin-left: 25%; line-height:35px; text-align:center; background:#1172c2; color:#fff; font-size:15px; font-family:"Open Sans",sans-serif; text-transform:Uppercase; font-weight:600; border-radius:5px; cursor:pointer; }
-        #file-ip-1-preview { height: 150px;}
-    </style>
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left pt-3 pb-3">

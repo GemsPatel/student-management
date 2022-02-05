@@ -13,10 +13,29 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request )
     {
-        $students = Student::with('mark')->orderBy( 'id', 'desc' )->get();//->paginate(10);
-        return view('students.index',compact('students'));//->with('i', (request()->input('page', 1) - 1) * 5);
+        $students = Student::with('mark')->orderBy( 'id', 'desc' );
+
+        if( $request->name ){
+            $students = $students->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if( $request->roll_number ){
+            $students = $students->where('roll_number',  'like', '%' . $request->roll_number . '%');
+        }
+
+        if( $request->score ){
+            $students = $students->where('score',  'like', '%' . $request->score . '%');
+        }
+
+        $students = $students->paginate(10);
+
+        // $students = Student::with('mark')->orderBy( 'id', 'desc' )->paginate(10);
+        return view('students.index',compact('students'));
+
+        // $students = Student::with('mark')->orderBy( 'id', 'desc' )->get();//->paginate(10);
+        // return view('students.index',compact('students'));//->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -140,11 +159,11 @@ class StudentController extends Controller
             'subject_4' => 'required',
             'mark_4' => 'required',
             'score' => 'required',
-            'avtar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            // 'avtar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         // save student information
-        $student = new Student();
+        $student = Student::find( $student->id );
         $student->roll_number = $request->roll_number;
         $student->name = $request->name;
         $student->class = $request->class;

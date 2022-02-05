@@ -3,9 +3,6 @@
 <?php
 use App\Models\Mark;
 ?>
-    <style>
-     
-    </style>
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left text-center p-3">
@@ -17,8 +14,28 @@ use App\Models\Mark;
             </div>
         </div>
         <div class="col-lg-12 margin-tb">
-            <div class="text-right pt-3">
-                <a class="btn btn-primary" href="{{ route('students.create') }}"> New Student</a>
+            <div class="row pt-3">
+                <div class="col-md-8">
+                    <form action="{{ route('students.index') }}" method="get" >
+                        <div class="row">
+                                <div class="col-md-3">
+                                    <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{request()->input('name')}}" >
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="roll_number" class="form-control" placeholder="Enter Roll No." value="{{request()->input('roll_number')}}" >
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="score" class="form-control" placeholder="Enter Score" value="{{request()->input('score')}}" >
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary" href="{{ route('students.create') }}"> Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-right">
+                            <a class="btn btn-primary" href="{{ route('students.create') }}"> New Student</a>
+                    </div>
             </div>
             <br>
         </div>
@@ -51,11 +68,11 @@ use App\Models\Mark;
                     <td>{{$ar->roll_number}}</td>
                     <td>{{$ar->name}}</td>
                     <td>{{$ar->class}}</td>
-                    <td><b>{{$ar->mark[0]->subject->name ?? ''}}:</b> {{$ar->mark[0]->mark ?? ''}}</td>
-                    <td><b>{{$ar->mark[1]->subject->name ?? ''}}:</b> {{$ar->mark[1]->mark ?? ''}}</td>
-                    <td><b>{{$ar->mark[2]->subject->name ?? ''}}:</b> {{$ar->mark[2]->mark ?? ''}}</td>
-                    <td><b>{{$ar->mark[3]->subject->name ?? ''}}:</b> {{$ar->mark[3]->mark ?? ''}}</td>
-                    <td><b>{{$ar->mark[4]->subject->name ?? ''}}:</b> {{$ar->mark[4]->mark ?? ''}}</td>
+                    <td><b>{{$ar->mark[0]->subject->name}}:</b> {{$ar->mark[0]->mark}}</td>
+                    <td><b>{{$ar->mark[1]->subject->name}}:</b> {{$ar->mark[1]->mark}}</td>
+                    <td><b>{{$ar->mark[2]->subject->name}}:</b> {{$ar->mark[2]->mark}}</td>
+                    <td><b>{{$ar->mark[3]->subject->name}}:</b> {{$ar->mark[3]->mark}}</td>
+                    <td><b>{{$ar->mark[4]->subject->name}}:</b> {{$ar->mark[4]->mark}}</td>
                     <td>{{$ar->score}}</td>
                     <td class="text-center">
                         <form action="{{ route('students.destroy',$ar->id) }}" method="POST">
@@ -74,13 +91,15 @@ use App\Models\Mark;
             @endforelse
         </tbody>
     </table>
-{{-- {!! $students->links() !!} --}}
+<div class="row custom-pagination">
+    {!! $students->links() !!}
+</div>
 <script>
-    $(document).ready(function() {
-        $('#student_table').DataTable( {
-            // dom: 'Qlfrtip',
-            "pagingType": "full_numbers"
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#student_table').DataTable( {
+    //         // dom: 'Qlfrtip',
+    //         "pagingType": "full_numbers"
+    //     });
+    // });
 </script>
 @endsection
